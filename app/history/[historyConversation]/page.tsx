@@ -38,6 +38,10 @@ const HistoryMessage = ({ params }: { params: historyConversationProps }) => {
     setIsDownloading(false)
   }
 
+  useEffect(() => {
+    getList()
+  }, [])
+
   const ChatDownloadFooter = () => (
     <button
       type="button"
