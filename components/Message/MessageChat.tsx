@@ -26,6 +26,107 @@ const MessageChat = ({ conversationId }: IMessageChatProps) => {
   const [finishDate, setFinishDate] = useState('' as string)
   const [lastMsg, setLastMsg] = useState('' as string)
 
+  const handleMessagesState = async () => {
+    setLastMsg(message)
+    if (isRegistring) {
+      if (password) {
+        setUserData({ ...userData, password: message })
+      } else if (name) {
+        setUserData({ ...userData, name: message })
+      } else if (username) {
+        setMessages([...messages, messageReply[1]])
+        setUserData({ ...userData, username: message })
+      }
+      setMessages([...messages, { name: 'user', message }])
+      setMessage('')
+      await sendMessage(message, conversationId, false)
+    } else {
+      setMessages([...messages, { name: 'user', message }])
+      setMessage('')
+      await sendMessage(message, conversationId, false)
+
+      const {
+        data: { answer },
+      } = await getBotResponse(message)
+
+      if (isRegistred) {
+        setBotMessage(answer)
+      } else {
+        setIsRegistring(true)
+        setUsername(true)
+        setBotMessage(messageReply[0].message)
+      }
+    }
+  }
+
+  const login = async () => {
+    await axios.post('/api/register', userData)
+  }
+
+  const handleKeyPress = async (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      await handleMessagesState()
+    }
+  }
+
+  const handleClick = async () => {
+    await handleMessagesState()
+  }
+
+  const handleDowlonad = async () => {
+    setIsDownloading(true)
+    const list = await getList(conversationId)
+    const valor = {
+      data: list,
+    }
+    const response = await axios.post(`${API_URL}/upload`, valor)
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute(
+      'download',
+      `Conversation ${userData.username}_${finishDate}.csv`,
+    )
+    document.body.appendChild(link)
+    link.click()
+    setIsDownloading(false)
+  }
+
+  useEffect(() => {
+    if (botMessage) {
+      setMessages([...messages, { name: 'zebra', message: botMessage }])
+      sendMessage(botMessage, conversationId, true)
+      setBotMessage('')
+    }
+  }, [botMessage])
+
+  useEffect(() => {
+    if (username && userData.username) {
+      setBotMessage(messageReply[1].message)
+      setPassword(true)
+      setUsername(false)
+    }
+  }, [username, userData.username])
+
+  useEffect(() => {
+    if (password && userData.password) {
+      setBotMessage(messageReply[2].message)
+      setName(true)
+      setPassword(false)
+    }
+  }, [password, userData.password])
+
+  useEffect(() => {
+    if (name && userData.name) {
+      setName(false)
+      setBotMessage(messageReply[5].message)
+
+      setIsRegistring(false)
+      login()
+      setIsRegistred(true)
+    }
+  }, [name, userData.name])
+
   useEffect(() => {
     if (lastMsg === 'Goodbye') {
       const now = new Date()
