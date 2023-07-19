@@ -20,3 +20,7 @@ export async function sendMessage(
     isBot,
   })
 }
+
+export function randomChoice(array: string[]) {
+  return array[Math.floor(Math.random() * array.length)]
+}
