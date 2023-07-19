@@ -34,3 +34,10 @@ export async function downloadConversation() {
   document.body.appendChild(link)
   link.click()
 }
+
+export async function getList(id: string) {
+  const { data } = await axios.post('/api/messages/list', {
+    conversationId: id,
+  })
+  return data
+}
