@@ -14,6 +14,14 @@ const HistoryMessage = ({ params }: { params: historyConversationProps }) => {
   const [conversationList, setConversationList] = useState([])
   const [isDownloading, setIsDownloading] = useState(false)
 
+  const getList = async () => {
+    const bodyData = {
+      conversationId: params.historyConversation,
+    }
+    const { data } = await axios.post('/api/messages/list', bodyData)
+    setConversationList(data)
+  }
+
   const ChatDownloadFooter = () => (
     <button
       type="button"
