@@ -21,3 +21,11 @@ export interface IChatUser {
   username: string
   password: string
 }
+
+export interface IConversationMessage {
+  id: string
+  body: string
+  isBot: boolean
+  createdAt: string
+  conversationId: string
+}
