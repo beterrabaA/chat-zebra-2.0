@@ -11,3 +11,7 @@ export interface IHistoryChatProps {
   title: string
   createdAt: string
 }
+
+export interface IUser {
+  username: string
+}
