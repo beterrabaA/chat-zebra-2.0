@@ -8,3 +8,15 @@ export async function getBotResponse(message: string) {
     message,
   })
 }
+
+export async function sendMessage(
+  message: string,
+  conversationId: string,
+  isBot: boolean,
+) {
+  return await axios.post('/api/messages', {
+    message,
+    conversationId,
+    isBot,
+  })
+}
