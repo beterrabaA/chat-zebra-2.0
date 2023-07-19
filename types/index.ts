@@ -15,3 +15,9 @@ export interface IHistoryChatProps {
 export interface IUser {
   username: string
 }
+
+export interface IChatUser {
+  name: string
+  username: string
+  password: string
+}
