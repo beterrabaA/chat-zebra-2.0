@@ -11,13 +11,12 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  username  String    @unique
+  username  String   @unique
   hashedPwd String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Message   Message[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Conversation {
@@ -32,10 +31,8 @@ model Conversation {
 model Message {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
   body           String?
+  isBot          Boolean       @default(false)
   createdAt      DateTime      @default(now())
   conversation   Conversation? @relation(fields: [conversationId], references: [id])
   conversationId String?       @db.ObjectId
-
-  senderId String @db.ObjectId
-  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
