@@ -6,3 +6,8 @@ export interface IMessage {
 export interface IMessageChatProps {
   conversationId: string
 }
+
+export interface IHistoryChatProps {
+  title: string
+  createdAt: string
+}
