@@ -24,3 +24,13 @@ export async function sendMessage(
 export function randomChoice(array: string[]) {
   return array[Math.floor(Math.random() * array.length)]
 }
+
+export async function downloadConversation() {
+  const response = await axios.get(`${API_URL}/download`)
+  const url = window.URL.createObjectURL(new Blob([response.data]))
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', 'file.csv')
+  document.body.appendChild(link)
+  link.click()
+}
