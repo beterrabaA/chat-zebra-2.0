@@ -29,3 +29,7 @@ export interface IConversationMessage {
   createdAt: string
   conversationId: string
 }
+
+export interface historyConversationProps {
+  historyConversation: string
+}
